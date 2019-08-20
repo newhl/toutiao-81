@@ -65,7 +65,21 @@ export default {
       // result当前的校验结果
       this.$refs.loginForm.validate(isOK => {
         if (isOK) {
-          console.log('成功')
+          this.$axios({
+            method: 'post',
+            url: '/authorizations',
+            data: this.formData
+          }).then(result => {
+            window.localStorage.setItem('user-info', JSON.stringify(result.data.data))
+            // 编程式导航
+            this.$router.push('/home')
+          }).catch(() => {
+            this.$message({
+              showClose: true,
+              message: '警告哦，这是一条警告消息',
+              type: 'warning'
+            })
+          })
         }
       })
     }

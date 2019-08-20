@@ -10,7 +10,7 @@ Vue.prototype.$axios = axios // 把axios的插件给了vue的原型属性
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0' // 将后台的地址给到axios的baseUrl
 Vue.config.productionTip = false
 Vue.use(ElementUI)
-Vue.use(axios)
+// Vue.use(axios)
 
 new Vue({
   router,
