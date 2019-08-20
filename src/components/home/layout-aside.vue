@@ -3,6 +3,45 @@
       <div class="title">
           <img src="../../assets/img/logo_admin.png" alt="">
       </div>
+      <el-menu
+      default-active="2"
+      class="el-menu-vertical-demo"
+      @open="handleOpen"
+      @close="handleClose"
+      background-color="#545c64"
+      text-color="#fff"
+      active-text-color="#ffd04b">
+      <el-menu-item>
+          <i class="el-icon-s-home"></i>
+          首页
+      </el-menu-item>
+      <el-submenu>
+        <template slot="title">
+        <i class="el-icon-menu"></i>
+        <span>内容管理</span>
+        </template>
+        <el-menu-item>发表文章</el-menu-item>
+        <el-menu-item>内容列表</el-menu-item>
+        <el-menu-item>素材管理</el-menu-item>
+        <el-menu-item>评论管理</el-menu-item>
+      </el-submenu>
+      <el-submenu>
+          <!-- 具名插槽 -->
+        <template slot="title">
+        <i class='el-icon-user-solid' ></i>
+        <span>粉丝管理</span>
+        </template>
+        <el-menu-item>图文数据</el-menu-item>
+        <el-menu-item>粉丝概况</el-menu-item>
+        <el-menu-item>粉丝画像</el-menu-item>
+        <el-menu-item>粉丝列表</el-menu-item>
+      </el-submenu>
+
+      <el-menu-item>
+        <i class="el-icon-setting"></i>
+        <span slot="title">账户信息</span>
+      </el-menu-item>
+    </el-menu>
   </div>
 </template>
 
@@ -15,7 +54,13 @@ export default {
 <style lang='less' scoped>
     .layout-aside{
         .title{
-
+            text-align: center;
+            padding: 15px 0;
+            background-color: #2e2f32;
+            img{
+                width: 120px;
+                height: 30px;
+            }
         }
     }
 

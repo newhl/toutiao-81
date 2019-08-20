@@ -2,8 +2,8 @@
 <!-- 主体容器 -->
   <el-container>
     <!-- 左侧边栏 -->
-    <el-aside>
-      <layout-asidee></layout-asidee>
+    <el-aside style="width:200px; height:100vh;background-color:#323745;">
+      <layout-aside></layout-aside>
     </el-aside>
     <el-container>
       <!-- 头部内容 -->
@@ -18,7 +18,7 @@
 import layoutAside from '../../components/home/layout-aside'
 export default {
 
-  component: {
+  components: {
     'layout-aside': layoutAside
   }
 
