@@ -34,11 +34,8 @@ export default {
   methods: {
     // 获取用户信息
     getUserInfo () {
-      let userInfo = window.localStorage.getItem('user-info') // 获取用户在本地存的token令牌
-      let token = userInfo ? JSON.parse(userInfo).token : null // 获取token
-      token && this.$axios({
-        url: '/user/profile',
-        headers: { 'Authorization': `Bearer ${token}` } // 将headers中赋值后端需要的 token
+      this.$axios({
+        url: '/user/profile'
       }).then(result => {
         this.user = result.data.data // 获取到data中的数据 赋值给user
       })
