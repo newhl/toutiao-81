@@ -46,8 +46,9 @@ export default {
     handleCommand (command) {
       if (command === 'account') {
         //  账户信息
+        this.$router.push('/home/account')
       } else if (command === 'git') {
-        window.location.href = 'https://github.com/newhl/toutiao-81.git'
+        // window.location.href = 'https://github.com/newhl/toutiao-81.git'
       } else {
         window.localStorage.clear()
         this.$router.push('/login')
