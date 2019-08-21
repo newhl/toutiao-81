@@ -70,7 +70,7 @@ export default {
             url: '/authorizations',
             data: this.formData
           }).then(result => {
-            window.localStorage.setItem('user-info', JSON.stringify(result.data.data))
+            window.localStorage.setItem('user-info', JSON.stringify(result.data))
             // 编程式导航
             this.$router.push('/home')
           }).catch(() => {

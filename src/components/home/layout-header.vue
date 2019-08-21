@@ -37,7 +37,7 @@ export default {
       this.$axios({
         url: '/user/profile'
       }).then(result => {
-        this.user = result.data.data // 获取到data中的数据 赋值给user
+        this.user = result.data // 获取到data中的数据 赋值给user
       })
     },
     handleCommand (command) {
