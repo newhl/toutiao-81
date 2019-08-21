@@ -7,14 +7,14 @@
     </el-col>
     <el-col :span="3" class="layout-right">
         <img :src="user.photo ? user.photo : defaultImg" alt="">
-    <el-dropdown trigger="click">
+    <el-dropdown trigger="click" @command="handleCommand">
       <span class="el-dropdown-link">{{user.name}}
           <i class="el-icon-arrow-down el-icon--right"></i>
       </span>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item >个人信息</el-dropdown-item>
-        <el-dropdown-item >git地址</el-dropdown-item>
-        <el-dropdown-item >退出</el-dropdown-item>
+        <el-dropdown-item command="account">个人信息</el-dropdown-item>
+        <el-dropdown-item command="git">git地址</el-dropdown-item>
+        <el-dropdown-item command="out">退出</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
     </el-col>
@@ -40,8 +40,18 @@ export default {
         url: '/user/profile',
         headers: { 'Authorization': `Bearer ${token}` } // 将headers中赋值后端需要的 token
       }).then(result => {
-        this.user = result.data.data
+        this.user = result.data.data // 获取到data中的数据 赋值给user
       })
+    },
+    handleCommand (command) {
+      if (command === 'account') {
+        //  账户信息
+      } else if (command === 'git') {
+        window.location.href = 'https://github.com/newhl/toutiao-81.git'
+      } else {
+        window.localStorage.clear()
+        this.$router.push('/login')
+      }
     }
   },
   created () {
