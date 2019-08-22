@@ -14,17 +14,21 @@ export default new Router({
       component: Login
     },
     {
-      path: '/',
+      path: '/home',
       name: 'home'
     },
     {
-      path: '/home',
+      path: '/',
       name: 'home',
       component: Home,
       children: [
         {
           path: '',
           component: Main
+        },
+        {
+          path: '/home/comment',
+          component: () => import('./views/comment') // 按需加载的页面
         }
       ]
     }
