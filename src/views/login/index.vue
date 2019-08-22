@@ -53,7 +53,7 @@ export default {
           { pattern: /^\d{6}$/, message: '验证码长度必须为6个数字', trigger: 'blur' }
         ],
         check: [
-          { message: '验证码不能为空', validator: func }
+          { message: '不能空', validator: func }
         ]
       }
     }

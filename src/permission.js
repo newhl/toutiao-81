@@ -1,5 +1,5 @@
 import router from './router'
-
+// 导航守卫
 router.beforeEach(function (to, from, next) {
   if (to.path.startsWith('/home')) {
     let result = window.localStorage.getItem('user-info')
