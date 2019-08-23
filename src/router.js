@@ -29,6 +29,10 @@ export default new Router({
         {
           path: '/home/comment',
           component: () => import('./views/comment') // 按需加载的页面
+        },
+        {
+          path: '/home/material',
+          component: () => import('./views/material') // 按需加载的页面
         }
       ]
     }

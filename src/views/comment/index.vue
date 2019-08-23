@@ -5,7 +5,7 @@
       <template slot="title">评论列表</template>
     </bread-crumb>
     <!-- 表格 -->
-    <el-table :data="list">
+    <el-table :data="list" v-loading="loading">
       <el-table-column label="标题" width="500" prop="title"></el-table-column>
       <el-table-column :formatter="formatter" label="评论状态" prop="comment_status"></el-table-column>
       <el-table-column label="总评论数" prop="total_comment_count"></el-table-column>
@@ -38,7 +38,8 @@ export default {
         pageSize: 10,
         total: 0,
         currentPage: 1
-      }
+      },
+      loading: true
     }
   },
   methods: {
@@ -65,8 +66,9 @@ export default {
     },
 
     //   query参数相当于get参数 存在get链接上
-    //    post  指的是 body参数
+    //   post  指的是 body参数
     getComments () {
+      this.loading = true
       let pageParams = {
         page: this.page.currentPage,
         per_page: this.page.pageSize
@@ -80,6 +82,7 @@ export default {
       }).then(result => {
         this.list = result.data.results
         this.page.total = result.data.total_count
+        this.loading = false
       })
     },
     // row 当条数据对象
