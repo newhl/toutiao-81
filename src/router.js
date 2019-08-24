@@ -33,6 +33,10 @@ export default new Router({
         {
           path: '/home/material',
           component: () => import('./views/material') // 按需加载的页面
+        },
+        {
+          path: '/home/articles',
+          component: () => import('./views/articles') // 按需加载的页面
         }
       ]
     }
