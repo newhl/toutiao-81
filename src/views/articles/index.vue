@@ -39,7 +39,7 @@
       <div class="content-item" v-for="(item,index) in list" :key="index">
         <!-- 左侧内容 -->
         <div class="left">
-          <img src="../../assets/img/404.png" alt />
+          <img :src="item.cover.images[0]" alt />
           <div class="info">
             <span>{{item.title}}</span>
             <el-tag
@@ -51,11 +51,11 @@
         </div>
         <!-- 右侧内容 -->
         <div class="right">
-          <span>
+          <span style='cursor:pointer'>
             <i class="el-icon-edit"></i>
             修改
           </span>
-          <span>
+          <span style='cursor:pointer' @click="delItem(item)">
             <i class="el-icon-delete"></i>
             删除
           </span>
@@ -97,6 +97,18 @@ export default {
     }
   },
   methods: {
+
+    delItem (item) {
+      this.$confirm('您确定要删除此条记录吗', '提示').then(() => {
+        this.$axios({
+          method: 'delete',
+          url: `/articles/${item.id.toString()}`
+        }).then(result => {
+          this.getArticles(this.getConditions())
+        })
+      })
+    },
+
     //   获取 A + B + C 的条件
     getConditions () {
       let { status, channel_id: cid, dateRange } = this.formData // 解构赋值
