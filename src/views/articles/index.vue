@@ -17,12 +17,7 @@
       <!-- 频道列表 -->
       <el-form-item label="频道列表">
         <el-select placeholder="请选择" v-model="formData.channel_id" @change="refreshList">
-          <el-option
-            v-for="item in channles"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id"
-          ></el-option>
+          <el-option v-for="item in channles" :key="item.id" :label="item.name" :value="item.id"></el-option>
         </el-select>
       </el-form-item>
       <!-- 活动日期 -->
@@ -44,10 +39,13 @@
       <div class="content-item" v-for="(item,index) in list" :key="index">
         <!-- 左侧内容 -->
         <div class="left">
-          <img src="../../assets/img/404.png" alt="" />
+          <img src="../../assets/img/404.png" alt />
           <div class="info">
             <span>{{item.title}}</span>
-            <el-tag style="width:60px" :type="item.status | statusType">{{ item.status | statusText }}</el-tag>
+            <el-tag
+              style="width:60px"
+              :type="item.status | statusType"
+            >{{ item.status | statusText }}</el-tag>
             <span class="date">{{item.pubdate}}</span>
           </div>
         </div>
@@ -64,9 +62,16 @@
         </div>
       </div>
     </div>
-
+    <!-- 分页组件 -->
     <el-row type="flex" justify="center" style="margin:20px 0">
-      <el-pagination background layout="prev, pager, next" :total="1000"></el-pagination>
+      <el-pagination
+        :current-page="page.currentPage"
+        :page-sizes="page.pageSize"
+        background
+        layout="prev, pager, next"
+        :total="page.total"
+        @current-change="changePage"
+      ></el-pagination>
     </el-row>
   </el-card>
 </template>
@@ -85,13 +90,15 @@ export default {
       channles: [],
       list: [], // 内容列表
       page: {
-        total: 0
+        total: 0,
+        pageSize: 10,
+        currentPage: 1
       }
     }
   },
   methods: {
-    //  刷新列表数据 状态改变 频道切换 时间改变
-    refreshList () {
+    //   获取 A + B + C 的条件
+    getConditions () {
       let { status, channel_id: cid, dateRange } = this.formData // 解构赋值
       let params = {
         status: this.formData.status === 5 ? null : status, // 默认给了5 但是5不能传
@@ -99,6 +106,24 @@ export default {
         begin_pubdate: dateRange && dateRange.length ? dateRange[0] : null,
         end_pubdate: dateRange && dateRange.length > 1 ? dateRange[1] : null
       }
+      params.page = this.page.currentPage
+      params.per_page = this.page.pageSize
+
+      return params
+    },
+
+    //   页码改变事件
+    changePage (newPage) {
+      this.page.currentPage = newPage // 获取当前的最先页码
+      let conditions = this.getConditions() // 获取其他条件
+      this.getArticles(conditions)
+    },
+
+    //  刷新列表数据 状态改变 频道切换 时间改变
+    refreshList () {
+    //  当筛选条件改变时 应该将页码回归到 第一页
+      this.page.currentPage = 1
+      let params = this.getConditions()
       this.getArticles(params)
     },
 
@@ -150,7 +175,8 @@ export default {
     }
   },
   created () {
-    this.getArticles()
+    let pageParams = { page: 1, per_page: 10 }
+    this.getArticles(pageParams)
     this.getChannels()
   }
 }
