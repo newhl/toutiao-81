@@ -37,6 +37,35 @@
         ></el-date-picker>
       </el-form-item>
     </el-form>
+    <div class="total-title">
+        共找到56789符合条件的内容
+    </div>
+    <!-- 内容列表 -->
+    <div class="content-list">
+        <div class="content-item" v-for="(item,index) in list" :key="index">
+            <!-- 左侧内容 -->
+            <div class="left">
+                <img src="" alt="">
+                <div class="info">
+                    <span>我是标题</span>
+                    <el-tag>标签一</el-tag>
+                    <span class="date">15165165</span>
+                </div>
+            </div>
+            <!-- 右侧内容 -->
+            <div class="right">
+                <span>
+                    <i class="el-icon-edit"></i>
+                    修改
+                </span>
+                <span>
+                    <i class="el-icon-delete"></i>
+                    删除
+                </span>
+            </div>
+        </div>
+    </div>
+
   </el-card>
 </template>
 
@@ -68,11 +97,55 @@ export default {
           value: '选项5',
           label: '北京烤鸭'
         }
-      ]
+      ],
+      list: [1, 2, 3, 4, 5, 6, 7] // 内容列表
     }
   }
 }
 </script>
 
-<style>
+<style lang="less" scoped>
+.total-title{
+    height: 60px;
+    line-height: 60px;
+    border-bottom: 1px dashed #ccc;
+}
+    .content-list{
+       .content-item{
+           display: flex;
+           justify-content: space-between;
+           padding: 10px;
+           border-bottom: 1px solid  #f2f3f5;
+           .left{
+               display: flex;
+               align-items: center;
+               img{
+                   width: 150px;
+                   height: 100px;
+                   border-radius: 4px;
+               }
+               .info{
+                   margin-left: 10px;
+                   height: 100px;
+                   padding: 5px 0;
+                   display: flex;
+                   flex-direction: column;
+                   justify-content: space-between;
+                   .date{
+                       font-size: 12px;
+                       color: #999;
+                   }
+               }
+           }
+           .right{
+               span, span i {
+                   font-size: 12px;
+                   color: #333;
+               }
+               span{
+                   margin-right: 5px
+               }
+           }
+       }
+    }
 </style>
