@@ -37,6 +37,10 @@ export default new Router({
         {
           path: '/home/articles',
           component: () => import('./views/articles') // 按需加载的页面
+        },
+        {
+          path: '/home/publish',
+          component: () => import('./views/publish') // 按需加载的页面
         }
       ]
     }
