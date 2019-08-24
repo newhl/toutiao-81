@@ -158,8 +158,9 @@ export default {
       })
     }
   },
-  //
+  // 过滤器
   filters: {
+    //   过滤文章类型
     statusText (value) {
       switch (value) {
         case 0:
