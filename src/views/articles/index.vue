@@ -6,30 +6,31 @@
     <el-form>
       <!-- 文章状态 -->
       <el-form-item label="文章状态">
-        <el-radio-group v-model="radio">
-          <el-radio :label="1">全部</el-radio>
-          <el-radio :label="2">草稿</el-radio>
-          <el-radio :label="3">待审核</el-radio>
-          <el-radio :label="4">审核成功</el-radio>
-          <el-radio :label="5">审核失败</el-radio>
+        <el-radio-group v-model="formData.status" @change="refreshList">
+          <el-radio :label="5">全部</el-radio>
+          <el-radio :label="0">草稿</el-radio>
+          <el-radio :label="1">待审核</el-radio>
+          <el-radio :label="2">审核成功</el-radio>
+          <el-radio :label="3">审核失败</el-radio>
         </el-radio-group>
       </el-form-item>
       <!-- 频道列表 -->
       <el-form-item label="频道列表">
-        <el-select placeholder="请选择">
+        <el-select placeholder="请选择" v-model="formData.channel_id" @change="refreshList">
           <el-option
-            v-model="value"
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            value="shanghai"
+            v-for="item in channles"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
           ></el-option>
         </el-select>
       </el-form-item>
       <!-- 活动日期 -->
       <el-form-item label="时间选择">
         <el-date-picker
-          v-model="value1"
+          @change="refreshList"
+          value-format="yyyy-MM-dd"
+          v-model="formData.dateRange"
           type="daterange"
           range-separator="|"
           start-placeholder="开始日期"
@@ -74,31 +75,14 @@
 export default {
   data () {
     return {
-      radio: '1',
-      value: '',
-      value1: '',
-      options: [
-        {
-          value: '选项1',
-          label: '黄金糕'
-        },
-        {
-          value: '选项2',
-          label: '双皮奶'
-        },
-        {
-          value: '选项3',
-          label: '蚵仔煎'
-        },
-        {
-          value: '选项4',
-          label: '龙须面'
-        },
-        {
-          value: '选项5',
-          label: '北京烤鸭'
-        }
-      ],
+      // 搜索栏的数据
+      formData: {
+        status: 5, // 默认是全部
+        channel_id: null, // 定义频道id
+        dateRange: null
+      },
+      //   频道数据
+      channles: [],
       list: [], // 内容列表
       page: {
         total: 0
@@ -106,12 +90,34 @@ export default {
     }
   },
   methods: {
-    getArticles () {
+    //  刷新列表数据 状态改变 频道切换 时间改变
+    refreshList () {
+      let { status, channel_id: cid, dateRange } = this.formData // 解构赋值
+      let params = {
+        status: this.formData.status === 5 ? null : status, // 默认给了5 但是5不能传
+        channel_id: cid,
+        begin_pubdate: dateRange && dateRange.length ? dateRange[0] : null,
+        end_pubdate: dateRange && dateRange.length > 1 ? dateRange[1] : null
+      }
+      this.getArticles(params)
+    },
+
+    // 获取文章
+    getArticles (params) {
       this.$axios({
-        url: '/articles'
+        url: '/articles',
+        params: { ...params }
       }).then(result => {
         this.list = result.data.results
         this.page.total = result.data.total_count //
+      })
+    },
+    // 获取频道数据
+    getChannels () {
+      this.$axios({
+        url: '/channels'
+      }).then(result => {
+        this.channles = result.data.channels
       })
     }
   },
@@ -145,6 +151,7 @@ export default {
   },
   created () {
     this.getArticles()
+    this.getChannels()
   }
 }
 </script>
