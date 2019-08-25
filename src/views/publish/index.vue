@@ -8,7 +8,7 @@
         <el-input v-model="formData.title" placeholder="请输入内容" style="width:400px"></el-input>
       </el-form-item>
       <el-form-item label="内容" prop="content">
-        <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="formData.content"></el-input>
+        <quill-editor style='width:800px;height:400px;margin-bottom:100px' v-model="formData.content"  type="textarea" :rows="4" placeholder="请输入内容"></quill-editor>
       </el-form-item>
       <el-form-item label="封面" >
         <el-radio-group v-model="formData.cover.type">
@@ -59,12 +59,16 @@ export default {
     }
   },
   methods: {
+    // 发布文章
     publish (draft) {
       this.$refs.myFrom.validate((isOk) => {
         if (isOk) {
+          let { articleId } = this.$route.params
+          let method = articleId ? 'put' : 'post'
+          let url = articleId ? `/articles/${articleId}` : '/articles'
           this.$axios({
-            method: 'post',
-            url: '/articles',
+            method,
+            url,
             params: { draft: draft },
             data: this.formData
           }).then(() => {
@@ -73,15 +77,32 @@ export default {
         }
       })
     },
+
+    // 获取文章类型并显示在列表中
     getChannels () {
       this.$axios({
         url: '/channels'
       }).then(result => {
         this.channels = result.data.channels
       })
+    },
+
+    // 通过文章id获得文章信息
+    getArticleById () {
+      let { articleId } = this.$route.params
+      this.$axios({
+        url: `/articles/${articleId}`
+      }).then(result => {
+        this.formData = result.data
+      })
     }
   },
   created () {
+    let { articleId } = this.$route.params
+    if (articleId) {
+      this.getArticleById()
+    }
+
     this.getChannels()
   }
 }

@@ -41,6 +41,10 @@ export default new Router({
         {
           path: '/home/publish',
           component: () => import('./views/publish') // 按需加载的页面
+        },
+        {
+          path: '/home/publish/:articleId', // 编辑文章 动态路由
+          component: () => import('./views/publish') // 按需加载的页面
         }
       ]
     }
