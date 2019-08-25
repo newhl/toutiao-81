@@ -11,7 +11,7 @@
         <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="formData.content"></el-input>
       </el-form-item>
       <el-form-item label="封面" >
-        <el-radio-group v-model="radio">
+        <el-radio-group v-model="formData.cover.type">
           <el-radio :label="1">单图</el-radio>
           <el-radio :label="3">三图</el-radio>
           <el-radio :label="0">无图</el-radio>
@@ -29,8 +29,8 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="publish">发布</el-button>
-        <el-button>存入草稿</el-button>
+        <el-button type="primary" @click="publish(fasle)">发布</el-button>
+        <el-button @click="publish(true)">存入草稿</el-button>
       </el-form-item>
     </el-form>
   </el-card>
@@ -46,20 +46,30 @@ export default {
         title: '',
         content: '',
         channel_id: null,
-        cover: null
+        cover: {
+          type: 0,
+          images: [] // 图片数组  随着type的变化而变化
+        }
       },
       rules: {
-        title: [{ required: true, message: '内容不能为空' }],
+        title: [{ required: true, message: '内容不能为空' }, { min: 5, max: 30, message: '字符需在5到30个之间' }],
         content: [{ required: true, message: '文章内容不能为空' }],
         channel_id: [{ required: true, message: '频道内容不能为空' }]
       }
     }
   },
   methods: {
-    publish () {
+    publish (draft) {
       this.$refs.myFrom.validate((isOk) => {
         if (isOk) {
-
+          this.$axios({
+            method: 'post',
+            url: '/articles',
+            params: { draft: draft },
+            data: this.formData
+          }).then(() => {
+            this.$router.push('/home/articles')
+          })
         }
       })
     },
