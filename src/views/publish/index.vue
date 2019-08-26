@@ -18,9 +18,8 @@
           <el-radio :label="-1">自动</el-radio>
         </el-radio-group>
       </el-form-item>
-
       <el-form-item>
-        <cover-image :type="formData.cover.type" :images="formData.cover.images"></cover-image>
+        <cover-image @updateImages="updateImages" :type="formData.cover.type" :images="formData.cover.images"></cover-image>
       </el-form-item>
 
       <el-form-item label="频道" prop="channel_id">
@@ -64,6 +63,14 @@ export default {
     }
   },
   methods: {
+    updateImages (url, index) {
+      this.formData.cover.images = this.formData.cover.images.map((item, i) => {
+        if (i === index) {
+          return url
+        }
+        return item
+      })
+    },
 
     changeType () {
       if (this.formData.cover.type === 1) {
