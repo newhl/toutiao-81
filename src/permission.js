@@ -1,6 +1,9 @@
 import router from './router'
+import nprogress from 'nprogress'
+import 'nprogress/nprogress.css'
 // 导航守卫
 router.beforeEach(function (to, from, next) {
+  nprogress.start() // 开始进度条
   if (to.path.startsWith('/home')) {
     let result = window.localStorage.getItem('user-info')
     if (result) {
@@ -16,6 +19,11 @@ router.beforeEach(function (to, from, next) {
   } else {
     next()
   }
+})
+
+router.afterEach(() => {
+  // ...
+  nprogress.done()
 })
 
 export default router
